@@ -32,12 +32,12 @@
 
 - name: copy templates files from playbook directory
   copy:
-    src: "{{ playbook_dir }}/files/templates/{{ item }}"
-    dest: "{{ prometheus_alertmanager_templates_dir }}/{{ item }}"
+    src: "{{ item }}"
+    dest: "{{ prometheus_alertmanager_templates_dir }}/"
     owner: "{{ prometheus_alertmanager_user }}"
     group: "{{ prometheus_alertmanager_group }}"
     mode: 0644
-  with_items:
-    - "{{ prometheus_alertmanager_templates_files }}"
+  with_fileglob:
+    - "{{ playbook_dir }}/files/templates/*.tmpl"
   notify:
     - reload alertmanager
